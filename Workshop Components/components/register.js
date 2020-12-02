@@ -1,7 +1,9 @@
 import { html, render } from 'https://unpkg.com/lit-html?module';
+import {register} from '../services/authService.js';
 
-const template=()=>html`
-        <form class="text-center border border-light p-5" action="#" method="post">
+
+const template = (ctx) => html`
+        <form class="text-center border border-light p-5" action="#" method="post" @submit=${ctx.onSubmit}>
             <div class="form-group">
                 <label for="email">Email</label>
                 <input type="email" class="form-control" placeholder="Email" name="email" value="">
@@ -20,13 +22,36 @@ const template=()=>html`
         </form>`;
 
 
-class Register extends HTMLElement{
-    connectedCallback(){
+class Register extends HTMLElement {
+
+    connectedCallback() {
         this.render();
     }
 
-    render(){
-        render(template(),this)
+    onSubmit(e) {
+        e.preventDefault();
+
+        let formData = new FormData(e.target);
+        let email = formData.get('email');
+        let password = formData.get('password');
+        let repeatPassword = formData.get('repeatPassword');
+
+        if (password.length < 6) {
+            notify('The password must be at least 6 characters', 'error');
+            return;
+        } 
+        
+        if (password != repeatPassword) {
+            notify('The passwords don\'t match', 'error');
+            return;
+        }
+            register(email, password);
+            notify('Successfuly registered');
+
+    }
+
+    render() {
+        render(template(this), this, { eventContext: this });
     }
 }
 export default Register;
