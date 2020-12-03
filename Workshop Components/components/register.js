@@ -1,5 +1,5 @@
 import { html, render } from 'https://unpkg.com/lit-html?module';
-import {register} from '../services/authService.js';
+import { register } from '../services/authService.js';
 
 
 const template = (ctx) => html`
@@ -39,15 +39,20 @@ class Register extends HTMLElement {
         if (password.length < 6) {
             notify('The password must be at least 6 characters', 'error');
             return;
-        } 
-        
+        }
+
         if (password != repeatPassword) {
             notify('The passwords don\'t match', 'error');
             return;
         }
-            register(email, password);
-            notify('Successfuly registered');
-
+        register(email, password)
+            .then(res => {
+                notify('Successful registration!');
+                //to redirect
+            })
+            .catch(er => {
+                notify(er.messege, 'error');
+            })
     }
 
     render() {
