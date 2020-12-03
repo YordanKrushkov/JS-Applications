@@ -1,5 +1,4 @@
 const apiKey = 'AIzaSyB3EY15nTTHvWkpxwU8a4xhuui86ioqKKk';
-const databaseURL = 'https://movies-93a2e.firebaseio.com';
 
 const api = {
     register: `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`,

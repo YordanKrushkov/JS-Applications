@@ -2,9 +2,9 @@ import { html, render } from 'https://unpkg.com/lit-html?module';
 
 let template = (ctx) => html`
 <div class="card mb-4">
-    <img class="card-img-top" src="https://pbs.twimg.com/media/ETINgKwWAAAyA4r.jpg" alt="Card image cap" width="400">
+    <img class="card-img-top" src="${ctx.data.imageUrl}" alt="${ctx.data.imageUrl}" width="400">
     <div class="card-body">
-        <h4 class="card-title">Wonder Woman 1984</h4>
+        <h4 class="card-title">${ctx.data.title}</h4>
     </div>
     <div class="card-footer">
         <a href="#/details/6lOxMFSMkML09wux6sAF"><button type="button" class="btn btn-info">Details</button></a>

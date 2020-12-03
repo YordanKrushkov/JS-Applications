@@ -1,4 +1,5 @@
 import { html, render } from 'https://unpkg.com/lit-html?module';
+import {getAllMovies} from '../services/movieService.js';
 
 let template = (ctx)=> html`<h1 class="text-center">Movies</h1>
 <section>
@@ -14,7 +15,7 @@ let template = (ctx)=> html`<h1 class="text-center">Movies</h1>
     <div class="row d-flex d-wrap">
 
         <div class="card-deck d-flex justify-content-center">
-            <movie-card></movie-card>
+           ${ctx.movie?.map(movie=>html` <movie-card .data=${movie}></movie-card>`)}
         </div>
     </div>
 </div>`;
@@ -22,7 +23,14 @@ let template = (ctx)=> html`<h1 class="text-center">Movies</h1>
 class Movies extends HTMLElement {
 
     connectedCallback() {
-        this.render();
+      
+        getAllMovies()
+        .then(movie=>{
+            this.movie=movie;
+            this.render();
+        })
+        this.render()
+
     }
     render() {
         render(template(this), this, { eventContext: this });
