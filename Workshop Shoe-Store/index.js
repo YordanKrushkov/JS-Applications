@@ -77,8 +77,12 @@ const app = Sammy('#root', function () {
     });
 
     this.get('/logout', function(context){
+        userModel.signOut()
+        .then(res=>{
         localStorage.removeItem('user');
-        this.redirect('/home')
+        this.redirect('/home');
+        })
+        .catch((error)=>console.log(error))
     })
 });
 
