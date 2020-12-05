@@ -1,3 +1,6 @@
+const userModel = firebase.auth();
+
+
 const app = Sammy('#root', function(){
 
     this.use('Handlebars', 'hbs');
@@ -7,14 +10,27 @@ const app = Sammy('#root', function(){
             this.partial('./templates/homeGuest.hbs');
         })
     });
-    //User Register
+
     this.get('/register',function(context){
         extendContent(context)
         .then(function(){
             this.partial('./templates/register.hbs');
         })
     });
-    //User Login
+
+    this.post('/register',function(context){
+        const {email, password, rePassword}=context.params;
+
+        if( password!==rePassword && password.length<6){
+            return;
+        }
+        userModel.createUserWithEmailAndPassword(email,password)
+        .then((userData)=>{
+            this.redirect('/login')
+        })
+        .catch((error)=>console.log(error))
+    })
+
     this.get('/login',function(context){
         extendContent(context)
         .then(function(){
@@ -22,7 +38,18 @@ const app = Sammy('#root', function(){
         })
 
     });
-    //Details
+
+    this.post('/login',function(context){
+        const {email, password}=context.params;
+
+        userModel.signInWithEmailAndPassword(email, password)
+        .then((userData)=>{
+           saveUserData(userData);
+            this.redirect('/home')
+        })
+        .catch((error)=>console.log(error))
+    })
+   
     this.get('/details',function(context){
 
         extendContent(context)
@@ -31,7 +58,7 @@ const app = Sammy('#root', function(){
         })
         
     });
-    //edit
+ 
     this.get('/edit-offer',function(context){
 
         extendContent(context)
@@ -40,7 +67,7 @@ const app = Sammy('#root', function(){
         })
         
     });
-    // New Offer
+   
     this.get('/create-offer',function(context){
         extendContent(context)
         .then(function(){
@@ -60,4 +87,14 @@ function extendContent(context){
         'header':'./partials/header.hbs',
         'footer': './partials/footer.hbs'
     })
+}
+
+function saveUserData(data){
+    const {user: {email, uid}}=data;
+    localStorage.setItem('user', JSON.stringify({email, uid}))
+}
+
+function getUserData(){
+    const user= localStorage.getItem('user');
+    return user? JSON.parse(user):null;
 }
