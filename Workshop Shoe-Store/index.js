@@ -1,14 +1,21 @@
 const userModel = firebase.auth();
+const database=firebase.firestore();
 
 
 const app = Sammy('#root', function () {
-
     this.use('Handlebars', 'hbs');
+
     this.get('/home', function (context) {
+    database.collection('offers').get()
+    .then((res)=>{
+        context.offers=res.docs.map((offer)=>{return {id:offer.id,...offer.data()}});
+     
         extendContent(context)
-            .then(function () {
-                this.partial('./templates/homeGuest.hbs');
-            })
+        .then(function () {
+            this.partial('./templates/home.hbs');
+        })
+    }).catch(error=>console.log(error))
+      
     });
 
     this.get('/register', function (context) {
@@ -50,17 +57,24 @@ const app = Sammy('#root', function () {
             .catch((error) => console.log(error))
     })
 
-    this.get('/details', function (context) {
+    this.get('/details/:id', function (context) {
+        const {id}=context.params;
+        
+        database.collection('offers').doc(id).get()
+        .then((res)=>{
+            const actualOfferdata= res.data();
+            const isCreator= actualOfferdata.creator ===getUserData().uid;
 
-        extendContent(context)
+            context.offer={...actualOfferdata, isCreator, id}
+            extendContent(context)
             .then(function () {
                 this.partial('./templates/details.hbs')
             })
-
+        })
     });
 
-    this.get('/edit-offer', function (context) {
-
+    this.get('/edit-offer/:id', function (context) {
+    const {id}=context.params;
         extendContent(context)
             .then(function () {
                 this.partial('./templates/editForm.hbs')
@@ -68,6 +82,7 @@ const app = Sammy('#root', function () {
 
     });
 
+ 
     this.get('/create-offer', function (context) {
         extendContent(context)
             .then(function () {
@@ -75,6 +90,24 @@ const app = Sammy('#root', function () {
             })
 
     });
+    this.post('/create-offer', function(context){
+            const {name, price, imageUrl, discription, brand}=context.params;
+            console.log(context.params);
+            database.collection('offers').add({
+                name,
+                price,
+                imageUrl,
+                discription,
+                brand,
+                creator: getUserData().uid,
+            })
+            .then((createProduct)=>{
+                console.log(createProduct);
+                this.redirect('/home');
+            })
+            .catch((error)=>{console.log(error);})
+
+    })
 
     this.get('/logout', function(context){
         userModel.signOut()
@@ -84,6 +117,17 @@ const app = Sammy('#root', function () {
         })
         .catch((error)=>console.log(error))
     })
+
+    this.get('/delete/:id', function(context){
+        const {id}=context.params;
+        database.collection('offers')
+        .doc(id)
+        .delete()
+        .then(()=>{
+            this.redirect('/home')
+        })
+    })
+
 });
 
 
