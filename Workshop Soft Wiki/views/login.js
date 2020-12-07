@@ -1,9 +1,9 @@
 import {html} from '../node_modules/lit-html/lit-html.js';
 
 
-export default ()=>html`
+export default ({onLoginSumbit})=>html`
 <div class="container auth">
-        <form action="#" method="">
+        <form action="" method="" @submit=${onLoginSumbit}>
             <fieldset>
                 <legend>Login</legend>
                 <blockquote>Knowledge is like money: to be of value it must circulate, and in circulating it can increase in quantity and, hopefully, in value</blockquote>
@@ -19,7 +19,7 @@ export default ()=>html`
                     <button class="btn submit" type="submit">Log In</button>
                 </p>
                 <p class="field">
-                    <span>If you don't have profile click <a href="#">here</a></span>
+                    <span>If you don't have profile click <a href="/register">here</a></span>
                 </p>
             </fieldset>
         </form>
