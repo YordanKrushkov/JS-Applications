@@ -6,7 +6,7 @@ const request = async (method, url, body) => {
     if (body) {
         Object.assign(options, {
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(body)
+            body: JSON.stringify({...body, returnSecureToken: true})
         });
     }
 

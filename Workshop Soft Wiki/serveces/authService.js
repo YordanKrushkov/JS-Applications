@@ -1,7 +1,6 @@
 import request from './request.js';
 
 const apiKey = 'AIzaSyBps1KzRAYY-axam0AwRP0eL8VhsNggU_k';
-const baseUrl='https://wikiproject-26a1b-default-rtdb.firebaseio.com';
 let endPoints={
     login: `https://identitytoolkit.googleapis.com/v1/accounts:signInWithPassword?key=${apiKey}`,
     register: `https://identitytoolkit.googleapis.com/v1/accounts:signUp?key=${apiKey}`,
@@ -32,6 +31,7 @@ export default {
             return {
                 'isAuthenticated': Boolean(data.idToken),
                 email: data.email || '',
+                idToken: data.idToken
             };
         }
         catch (error) {

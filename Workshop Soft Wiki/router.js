@@ -6,8 +6,9 @@ import home from './views/home.js';
 import login from './views/login.js'
 import register from './views/register.js';
 import notFound from './views/not-found.js';
+import createArticle from './views/create.js';
 
-import {onLoginSumbit} from './eventListeners.js'
+import {onLoginSumbit, onArticleCreateSumbit} from './eventListeners.js'
 
 const routes = [
     {
@@ -48,6 +49,13 @@ const routes = [
             return login(props);
         }
        
+    },
+    {
+        path: '/create',
+        template:createArticle,
+        context:{
+            onArticleCreateSumbit
+        }
     }
 ];
 
