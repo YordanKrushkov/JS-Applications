@@ -7,7 +7,7 @@ import footer from './footer.js';
 export default (templateResult, props)=>html`
 ${header(props)}
 
-${templateResult}
+${templateResult(props)}
 
 ${footer(props)};
 `;

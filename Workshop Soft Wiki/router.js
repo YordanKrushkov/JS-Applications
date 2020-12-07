@@ -1,5 +1,6 @@
 import { html, render } from './node_modules/lit-html/lit-html.js';
 
+import authService from './serveces/authService.js';
 import layot from './views/layout.js';
 import home from './views/home.js';
 import login from './views/login.js'
@@ -11,7 +12,17 @@ import {onLoginSumbit} from './eventListeners.js'
 const routes = [
     {
         path: '/',
-        template: home
+        template: (props)=>{
+            let template= home;
+            let url='/'
+
+        if(!props.isAuthenticated){
+            template=login;
+            url='/login';
+        }
+        history.pushState({},'', url);
+        return template(props);
+        }
     },
     {
         path: '/login',
@@ -27,6 +38,16 @@ const routes = [
     {
         path: '/not-found',
         template: notFound
+    },
+    {
+        path: '/logout',
+        template:(props)=>{
+            authService.logout();
+        history.pushState({},'', '/');
+
+            return login(props);
+        }
+       
     }
 ];
 
@@ -34,7 +55,8 @@ const router = (path) => {
     history.pushState({},'',path)
     let rout = routes.find(x => x.path === path) || routes.find(x => x.path === '/not-found');
     let context=rout.context;
-    render(layot(rout.template(context), { navigationHandler }), document.getElementById('app'));
+    let userData=authService.getAuthData();
+    render(layot(rout.template, { navigationHandler, onLoginSumbit,...userData,...context }), document.getElementById('app'));
 
 };
 

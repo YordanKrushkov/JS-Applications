@@ -1,5 +1,5 @@
 import authService from './serveces/authService.js'
-
+import router from './router.js'
 export const onLoginSumbit= (e) =>{
     e.preventDefault();
 
@@ -10,7 +10,7 @@ let password= formData.get('password')
     if(email!='' && password!=''){
       authService.login(email, password)
         .then((data) =>{
-            console.log(data);
+           router('/')
         })
     }
 }
