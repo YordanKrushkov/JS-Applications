@@ -1,4 +1,5 @@
 import authService from './services/authService.js'
+import router from './router.js'
 
 export const onLogin=(e)=>{
     e.preventDefault();
@@ -8,7 +9,7 @@ export const onLogin=(e)=>{
     let password=formData.get('password')
     authService.login(email,password)
     .then(data=>{
-        console.log(data.email);
+       router('/')
     })
 }
 
@@ -19,8 +20,17 @@ export const onRegister=(e)=>{
     let email= formData.get('email');
     let password=formData.get('password')
     let repeatPassword=formData.get('repeatPassword');
-
+    if(password.length<6){
+        return;
+    }
     if(password==repeatPassword){
        authService.register(email,password)
+       .then(data=>{
+           router('/login')
+       })
     }
 }
+
+
+   
+

@@ -10,6 +10,7 @@ import layout from './components/layout.js';
 import notFound from './components/notFound.js';
 import postForm from './components/post.js';
 
+
 const routes = [
     {
         path: '/',
@@ -38,8 +39,15 @@ const routes = [
         template: postForm
     },
     {
-        path:'/logout'
-    }
+        path: '/logout',
+        template: () => {
+            authService.logout().then(data => {
+                history.pushState({}, '', '/');
+                router('/');
+            })
+        }
+
+    },
 ];
 
 const router = (path) => {
@@ -48,7 +56,7 @@ const router = (path) => {
     let rout = routes.find(x => x.path == path) || routes.find(x => x.path == '/not-found');
     let context = rout.context;
     let userData = authService.getData();
-    render(layout(rout.template({context,...userData}), { eventHandler, ...userData }), document.getElementById('root'));
+    render(layout(rout.template, { eventHandler, ...userData, ...context }), document.getElementById('root'));
 }
 
 function eventHandler(e) {

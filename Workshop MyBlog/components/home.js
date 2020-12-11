@@ -1,5 +1,6 @@
 import { html, render } from 'https://unpkg.com/lit-html?module';
 export default ({
+  eventHandler,
   isAuthenticated
 }) => html`
  ${isAuthenticated
@@ -28,11 +29,11 @@ export default ({
 
   :html`
   <section id="home">
-      <section class="background-container">
+      <section class="background-container" @click=${eventHandler}>
         <h1>Welcome to MyBlog!</h1>
         <div class="auth-buttons">
-          <a href="#/login">Login</a>
-          <a href="#/register">Register</a>
+          <a href="/login">Login</a>
+          <a href="/register">Register</a>
         </div>
       </section>
     </section>

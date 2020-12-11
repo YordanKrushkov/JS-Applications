@@ -4,7 +4,7 @@ import { html, render } from 'https://unpkg.com/lit-html?module';
 export default ({
     eventHandler,
     isAuthenticated,
-    email
+    email,
 }) => html` 
 <header id="header" @click="${eventHandler}">
     <h1>MyBlog</h1> 
@@ -16,7 +16,7 @@ export default ({
     <nav id="nav">
         <ul> 
             ${isAuthenticated
-            ? html`<li><a href="/logout">Logout</a></li>`
+            ? html`<li><a href="/logout" >Logout</a></li>`
             :html`<li><a href="/">Home</a></li>
             <li><a href="/login">Login</a></li>
             <li><a href="/register">Register</a></li>`

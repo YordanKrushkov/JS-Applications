@@ -4,5 +4,5 @@ import header from './header.js';
 
 export default(template,props)=>html`
 ${header(props)}
-${template}
+${template(props)}
 `

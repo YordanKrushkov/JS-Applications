@@ -40,8 +40,7 @@ export default {
         }
     },
 
-    async logut(){
-        e.preventDefault();
+  async logout(){
         localStorage.setItem('user', '')
     }
 }

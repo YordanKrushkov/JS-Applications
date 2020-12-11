@@ -1,9 +1,10 @@
 import { html, render } from 'https://unpkg.com/lit-html?module';
 
 export default ({
+  eventHandler,
   onLogin
 }) => html`
-<section id="login" >
+<section id="login" @click=${eventHandler}>
   <div class="color">
     <div class="login-form">
       <h1>Login</h1>

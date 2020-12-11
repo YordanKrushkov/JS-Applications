@@ -1,9 +1,10 @@
 import { html, render } from 'https://unpkg.com/lit-html?module';
 
 export default ({
+  eventHandler,
   onRegister
 }) => html`
-    <section id="register">
+    <section id="register" @click=${eventHandler}>
       <div class="color">
         <div class="register-form">
           <h1>Register</h1>
